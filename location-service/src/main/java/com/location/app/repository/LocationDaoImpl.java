@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.location.app.commons.DBQueries;
@@ -20,11 +22,21 @@ public class LocationDaoImpl implements LocationDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-
+// :name, :description, :createdate, :createduser, :lastmodified, :updateduser
 	@Override
 	public int save(Location location) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		  KeyHolder keyHolder = new GeneratedKeyHolder();
+		SqlParameterSource paramSource=new MapSqlParameterSource()
+				.addValue("name", location.getName())
+				.addValue("description", location.getDescription())
+				.addValue("createdate", location.getCreatedate())
+				.addValue("createduser", location.getCreatedUser())
+				.addValue("lastmodified", location.getLastmodified())
+				.addValue("updateduser", location.getUpdatedUser());
+		
+				
+		return namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
+		
 	}
 
 	@Override
