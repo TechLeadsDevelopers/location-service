@@ -35,8 +35,11 @@ public class LocationDaoImpl implements LocationDao {
 				.addValue("updateduser", location.getUpdatedUser());
 		
 				
-		return namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
-		
+		 int count=namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
+		   long num = keyHolder.getKey().longValue();
+		   location.setId(num);
+		 return count;
+		 
 	}
 
 	@Override
