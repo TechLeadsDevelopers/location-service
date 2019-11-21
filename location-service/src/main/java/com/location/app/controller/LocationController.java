@@ -1,5 +1,8 @@
 package com.location.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.location.app.model.Location;
@@ -19,31 +21,47 @@ public class LocationController {
 	private LocationService locationService;
 
 	@RequestMapping(value = "/locations/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Location> findLocationById(@PathVariable("id") Long id) throws Exception {
+	public ResponseEntity<Location> findLocationById(@PathVariable("id") Long id) {
+		Location location = new Location();
 		try {
-			Location location = locationService.findById(id);
+			location = locationService.findById(id);
 			if (location.getId() == 0) {
 				return new ResponseEntity<Location>(location, HttpStatus.NOT_FOUND);
 			}
 
-			return new ResponseEntity<Location>(location, HttpStatus.OK);
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
 		}
+		return new ResponseEntity<Location>(location, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/locations", method = RequestMethod.POST)
-	public ResponseEntity<Location> saveLocation(@RequestBody Location location) throws Exception {
+	public ResponseEntity<Location> saveLocation(@RequestBody Location location) {
 		try {
 			location = locationService.save(location);
 			if (location.getId() == 0) {
 				return new ResponseEntity<Location>(location, HttpStatus.BAD_REQUEST);
 			}
 
-			return new ResponseEntity<Location>(location, HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Location>(location, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/locations", method = RequestMethod.GET)
+	public ResponseEntity<List<Location>> findAllLocations() throws Exception {
+		List<Location> locations = new ArrayList<Location>();
+		try {
+			locations = locationService.findAll();
+			if (locations.size() == 0) {
+				return new ResponseEntity<List<Location>>(locations, HttpStatus.NO_CONTENT);
+			}
+
 		} catch (Exception e) {
 			throw e;
 		}
+		return new ResponseEntity<List<Location>>(locations, HttpStatus.OK);
 	}
 
 }

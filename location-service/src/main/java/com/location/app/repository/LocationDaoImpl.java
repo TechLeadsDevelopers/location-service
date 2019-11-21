@@ -3,6 +3,7 @@ package com.location.app.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,26 +49,30 @@ public class LocationDaoImpl implements LocationDao {
 
 	@Override
 	public Location findById(Long id) throws Exception {
-		Location location = new Location();
-		SqlParameterSource paramSource = new MapSqlParameterSource().addValue("id", id);
-		namedParameterJdbcTemplate.query(DBQueries.SELECT_LOCTN_BY_ID, paramSource, new ResultSetExtractor<Location>() {
+		try {
+			Location location = new Location();
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("id", id);
+			namedParameterJdbcTemplate.query(DBQueries.SELECT_LOCTN_BY_ID, paramSource, new ResultSetExtractor<Location>() {
 
-			@Override
-			public Location extractData(ResultSet rs) throws SQLException, DataAccessException {
-				while (rs.next()) {
-					location.setId(rs.getLong("ID"));
-					location.setName(rs.getString("NAME"));
-					location.setDescription(rs.getString("DESCRIPTION"));
-					location.setCreatedate(rs.getTimestamp("CREATEDATE"));
-					location.setCreatedUser(rs.getString("CREATEDUSER"));
-					location.setLastmodified(rs.getTimestamp("LASTMODIFIED"));
-					location.setUpdatedUser(rs.getString("UPDATEDUSER"));
+				@Override
+				public Location extractData(ResultSet rs) throws SQLException, DataAccessException {
+					while (rs.next()) {
+						location.setId(rs.getLong("ID"));
+						location.setName(rs.getString("NAME"));
+						location.setDescription(rs.getString("DESCRIPTION"));
+						location.setCreatedate(rs.getTimestamp("CREATEDATE"));
+						location.setCreatedUser(rs.getString("CREATEDUSER"));
+						location.setLastmodified(rs.getTimestamp("LASTMODIFIED"));
+						location.setUpdatedUser(rs.getString("UPDATEDUSER"));
 
+					}
+					return location;
 				}
-				return location;
-			}
-		});
-		return location;
+			});
+			return location;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
@@ -78,8 +83,31 @@ public class LocationDaoImpl implements LocationDao {
 
 	@Override
 	public List<Location> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			SqlParameterSource paramSource = new MapSqlParameterSource();
+			List<Location> locations=new ArrayList<Location>();
+			namedParameterJdbcTemplate.query(DBQueries.SELECT_ALL_LOCTN, paramSource, new ResultSetExtractor<List<Location>>() {
+
+				@Override
+				public List<Location> extractData(ResultSet rs) throws SQLException, DataAccessException {
+					while(rs.next()) {
+						Location location=new Location();
+						location.setId(rs.getLong("ID"));
+						location.setName(rs.getString("ID"));
+						location.setDescription(rs.getString("DESCRIPTION"));
+						location.setCreatedate(rs.getTimestamp("CREATEDATE"));
+						location.setCreatedUser(rs.getString("CREATEDUSER"));
+						location.setLastmodified(rs.getTimestamp("LASTMODIFIED"));
+						location.setUpdatedUser(rs.getString("UPDATEDUSER"));
+						locations.add(location);
+					}
+					return locations;
+				}
+			});
+			return locations;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

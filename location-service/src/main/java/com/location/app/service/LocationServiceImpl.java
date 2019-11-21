@@ -41,8 +41,12 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<Location> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			List<Location> locations = locationDao.findAll();
+			return locations;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
