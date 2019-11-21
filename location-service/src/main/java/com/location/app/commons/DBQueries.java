@@ -5,7 +5,7 @@ public interface DBQueries {
 	String SELECT_LOCTN_BY_ID = "SELECT ID, NAME, DESCRIPTION, CREATEDATE, CREATEDUSER, LASTMODIFIED, UPDATEDUSER FROM LOCATION WHERE ID=:id";
 	String INSERT_LOCTN_ORA = "INSERT INTO LOCATION ( ID, NAME, DESCRIPTION, CREATEDATE, CREATEDUSER, LASTMODIFIED, UPDATEDUSER ) VALUES ( CUSMR_ID.nextval, :name, :description, :createdate, :createduser, :lastmodified, :updateduser )";
 	String INSERT_LOCTN = "INSERT INTO LOCATION ( NAME, DESCRIPTION, CREATEDATE, CREATEDUSER, LASTMODIFIED, UPDATEDUSER ) VALUES ( :name, :description, :createdate, :createduser, :lastmodified, :updateduser )";
-	String UPDTE_LOCTN_BY_ID = "UPDATE customer SET name = :name, description = :description,  lastmodified = :lastmodified, updateduser = :updateduser WHERE id = :id";
+	String UPDTE_LOCTN_BY_ID = "UPDATE LOCATION SET name = :name, description = :description,  lastmodified = :lastmodified, UPDATEDUSER = :updateduser WHERE id = :id";
 	String DELTE_LOCTN_BY_ID = "DELETE FROM LOCATION WHERE ID = :id";
 	String GET_LOCTN_WITH_MAX_ID="SELECT ID, NAME, DESCRIPTION, CREATEDATE, CREATEDUSER, LASTMODIFIED, UPDATEDUSER FROM LOCATION WHERE ID=(SELECT MAX(ID) FROM LOCATION )";
 }

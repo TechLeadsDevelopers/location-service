@@ -93,7 +93,7 @@ public class LocationDaoImpl implements LocationDao {
 					while(rs.next()) {
 						Location location=new Location();
 						location.setId(rs.getLong("ID"));
-						location.setName(rs.getString("ID"));
+						location.setName(rs.getString("NAME"));
 						location.setDescription(rs.getString("DESCRIPTION"));
 						location.setCreatedate(rs.getTimestamp("CREATEDATE"));
 						location.setCreatedUser(rs.getString("CREATEDUSER"));
@@ -112,8 +112,18 @@ public class LocationDaoImpl implements LocationDao {
 
 	@Override
 	public int updateById(Long id, Location location) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+
+		try {
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("name", location.getName())
+					.addValue("description", location.getDescription())
+					.addValue("lastmodified", new Timestamp(new Date().getTime()))
+					.addValue("updateduser", location.getUpdatedUser())
+					.addValue("id", id);
+			int count = namedParameterJdbcTemplate.update(DBQueries.UPDTE_LOCTN_BY_ID, paramSource);
+			return count;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

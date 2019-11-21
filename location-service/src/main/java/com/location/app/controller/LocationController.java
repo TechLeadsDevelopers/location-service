@@ -64,4 +64,18 @@ public class LocationController {
 		return new ResponseEntity<List<Location>>(locations, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/locations/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Location> updateById(@PathVariable("id") Long id, @RequestBody Location location) {
+		try {
+			location = locationService.updateById(id, location);
+			if (location.getId() == 0) {
+				return new ResponseEntity<Location>(new Location(), HttpStatus.NOT_FOUND);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Location>(location, HttpStatus.OK);
+	}
+
 }

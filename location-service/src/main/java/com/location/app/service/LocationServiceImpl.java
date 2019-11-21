@@ -51,8 +51,15 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public Location updateById(Long id, Location location) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			int count = locationDao.updateById(id, location);
+			if (count > 0) {
+				return locationDao.findById(id);
+			}
+			return new Location();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
