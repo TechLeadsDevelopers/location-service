@@ -25,20 +25,24 @@ public class LocationDaoImpl implements LocationDao {
 // :name, :description, :createdate, :createduser, :lastmodified, :updateduser
 	@Override
 	public int save(Location location) throws Exception {
-		  KeyHolder keyHolder = new GeneratedKeyHolder();
-		SqlParameterSource paramSource=new MapSqlParameterSource()
-				.addValue("name", location.getName())
-				.addValue("description", location.getDescription())
-				.addValue("createdate", location.getCreatedate())
-				.addValue("createduser", location.getCreatedUser())
-				.addValue("lastmodified", location.getLastmodified())
-				.addValue("updateduser", location.getUpdatedUser());
-		
-				
-		 int count=namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
-		   long num = keyHolder.getKey().longValue();
-		   location.setId(num);
-		 return count;
+		  try {
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			SqlParameterSource paramSource=new MapSqlParameterSource()
+					.addValue("name", location.getName())
+					.addValue("description", location.getDescription())
+					.addValue("createdate", location.getCreatedate())
+					.addValue("createduser", location.getCreatedUser())
+					.addValue("lastmodified", location.getLastmodified())
+					.addValue("updateduser", location.getUpdatedUser());
+			
+					
+			 int count=namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
+			   long num = keyHolder.getKey().longValue();
+			   location.setId(num);
+			 return count;
+		} catch (Exception e) {
+		throw e;
+		}
 		 
 	}
 
