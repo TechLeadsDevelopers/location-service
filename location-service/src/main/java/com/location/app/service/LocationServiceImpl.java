@@ -64,8 +64,12 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<Location> deleteById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			int count =locationDao.deleteById(id);
+			return findAll();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }

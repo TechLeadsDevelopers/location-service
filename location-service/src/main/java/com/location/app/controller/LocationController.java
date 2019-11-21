@@ -77,5 +77,22 @@ public class LocationController {
 		}
 		return new ResponseEntity<Location>(location, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value = "/locations/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<List<Location>> deleteLocationById(@PathVariable("id") Long id) {
+		List<Location> locations = new ArrayList<Location>();
+		try {
+			locations = locationService.deleteById(id);
+			if (locations.size() == 0) {
+				return new ResponseEntity<List<Location>>(locations, HttpStatus.NO_CONTENT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<List<Location>>(locations, HttpStatus.OK);
+	}
+	
 
 }

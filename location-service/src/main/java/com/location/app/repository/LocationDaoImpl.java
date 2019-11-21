@@ -128,13 +128,19 @@ public class LocationDaoImpl implements LocationDao {
 
 	@Override
 	public int deleteById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			SqlParameterSource paramSource=new MapSqlParameterSource()
+					.addValue("id", id);
+			
+			int count=namedParameterJdbcTemplate.update(DBQueries.DELTE_LOCTN_BY_ID, paramSource);
+			return count;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
 	public Location getCSMTRByMaxId() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
