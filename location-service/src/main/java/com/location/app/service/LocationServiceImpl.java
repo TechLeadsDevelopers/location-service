@@ -15,8 +15,11 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public Location save(Location location) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		int count=locationDao.save(location);
+		if(count>0) {
+		return findById(location.getId());
+		}
+		return new Location();
 	}
 
 	@Override

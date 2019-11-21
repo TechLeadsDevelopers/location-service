@@ -2,6 +2,8 @@ package com.location.app.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,28 +24,26 @@ public class LocationDaoImpl implements LocationDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-// :name, :description, :createdate, :createduser, :lastmodified, :updateduser
 	@Override
 	public int save(Location location) throws Exception {
-		  try {
+		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
-			SqlParameterSource paramSource=new MapSqlParameterSource()
-					.addValue("name", location.getName())
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("name", location.getName())
 					.addValue("description", location.getDescription())
-					.addValue("createdate", location.getCreatedate())
+					.addValue("createdate", new Timestamp(new Date().getTime()))
 					.addValue("createduser", location.getCreatedUser())
-					.addValue("lastmodified", location.getLastmodified())
+					.addValue("lastmodified", new Timestamp(new Date().getTime()))
 					.addValue("updateduser", location.getUpdatedUser());
-			
-					
-			 int count=namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource,keyHolder,new String[] {"ID"});
-			   long num = keyHolder.getKey().longValue();
-			   location.setId(num);
-			 return count;
+
+			int count = namedParameterJdbcTemplate.update(DBQueries.INSERT_LOCTN, paramSource, keyHolder,
+					new String[] { "ID" });
+			long num = keyHolder.getKey().longValue();
+			location.setId(num);
+			return count;
 		} catch (Exception e) {
-		throw e;
+			throw e;
 		}
-		 
+
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class LocationDaoImpl implements LocationDao {
 		});
 		return location;
 	}
+
 	@Override
 	public Location findByName(String name) throws Exception {
 		// TODO Auto-generated method stub
@@ -98,7 +99,5 @@ public class LocationDaoImpl implements LocationDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }
